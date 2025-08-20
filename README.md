@@ -1,0 +1,1 @@
+# Spindler - GEDCOM Kotlin Parser
