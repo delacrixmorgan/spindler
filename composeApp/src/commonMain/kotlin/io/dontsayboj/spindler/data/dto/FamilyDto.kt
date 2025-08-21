@@ -27,4 +27,11 @@ data class FamilyDto(
 
     val changeDate: LocalDate? = null, // CHAN
     val creationDate: LocalDate? = null, // CREA
-)
+) {
+    companion object {
+        const val HUSBAND_TAG = "HUSB"
+        const val WIFE_TAG = "WIFE"
+        const val CHILDREN_TAG = "CHIL"
+        const val MARRIAGE_TAG = "MARR"
+    }
+}

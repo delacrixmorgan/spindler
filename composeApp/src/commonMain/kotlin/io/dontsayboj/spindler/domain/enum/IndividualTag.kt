@@ -36,7 +36,6 @@ import io.dontsayboj.spindler.domain.enum.IndividualEvent.PROB
 import io.dontsayboj.spindler.domain.enum.IndividualEvent.RETI
 import io.dontsayboj.spindler.domain.enum.IndividualEvent.WILL
 
-
 interface IndividualTag
 
 /**
