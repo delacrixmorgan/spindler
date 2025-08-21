@@ -1,5 +1,7 @@
 package io.dontsayboj.spindler
 
+import io.dontsayboj.spindler.data.mapper.IndividualDtoToModelMapper
+import io.dontsayboj.spindler.domain.model.Individual
 import kotlinx.datetime.LocalDate
 
 /**
@@ -26,17 +28,6 @@ data class Event(
     val parsedDate: LocalDate? = null
 )
 
-data class Individual(
-    val id: String,
-    val givenNames: List<String>,
-    val lastName: String,
-    val sex: String?,
-    val birth: Event?,
-    val death: Event?,
-    val famc: List<String>,   // child in these families
-    val fams: List<String>    // spouse in these families
-)
-
 data class Family(
     val id: String,
     val husband: String?,
@@ -48,10 +39,7 @@ data class Family(
 data class GedcomIndex(
     val individuals: Map<String, Individual>,
     val families: Map<String, Family>
-) {
-    fun findIndividualsByName(name: String): List<Individual> =
-        individuals.values.filter { it.givenNames.any { n -> n.equals(name, true) || n.contains(name, true) } }
-}
+)
 
 /** ------- Parser ------- */
 object GedcomParser {
@@ -60,79 +48,63 @@ object GedcomParser {
      * Handles CONT/CONC line folding and common quoting, is intentionally lenient.
      */
     fun parseString(text: String): GedcomDocument {
-        val rawLines = text.replace("\r\n", "\n").replace("\r", "\n").lines()
+        val rawLines = text.replace(Regex("\r\n?"), "\n").lineSequence()
         val lines = unfoldLines(rawLines)
+
         val rootChildren = mutableListOf<GedcomNode>()
         val stack = ArrayDeque<GedcomNode>()
 
         for (line in lines) {
-            if (line.isBlank()) continue
-            val tok = tokenize(line) ?: continue
-            val node = GedcomNode(level = tok.level, pointer = tok.pointer, tag = tok.tag, value = tok.value)
-            // Place in tree by level using a simple stack
+            val token = tokenize(line)?.takeIf { line.isNotBlank() } ?: continue
+            val node = GedcomNode(token.level, token.pointer, token.tag, token.value)
+
+            // Ensure correct parent based on GEDCOM level
             while (stack.isNotEmpty() && stack.last().level >= node.level) {
                 stack.removeLast()
             }
-            if (stack.isEmpty()) {
-                rootChildren += node
-            } else {
-                stack.last().children += node
-            }
-            stack.addLast(node)
+            (if (stack.isEmpty()) rootChildren else stack.last().children) += node
+            stack += node
         }
-        return GedcomDocument(nodes = rootChildren)
+
+        return GedcomDocument(rootChildren)
     }
 
     /** Simple token structure for one GEDCOM line. */
     private data class Token(val level: Int, val pointer: String?, val tag: String, val value: String?)
 
-    /**
-     * Tokenize a GEDCOM line of forms like:
-     *  - 0 @I1@ INDI
-     *  - 1 NAME John /Doe/
-     *  - 2 DATE 1 JAN 1900
-     *  - 1 NOTE Lorem
-     */
+    /** Split a single GEDCOM line into a [Token], or null if invalid. */
     private fun tokenize(line: String): Token? {
-        // Split first by space for level
         val firstSpace = line.indexOf(' ')
         if (firstSpace <= 0) return null
+
         val level = line.substring(0, firstSpace).toIntOrNull() ?: return null
         var rest = line.substring(firstSpace + 1).trim()
 
-        var pointer: String? = null
-        var tag: String
-        var value: String? = null
+        val pointer = extractPointer(rest).also { if (it != null) rest = rest.removePrefix(it).trim() }
+        val (tag, value) = splitTagAndValue(rest)
 
-        // If it starts with @...@ that's a pointer/xref
-        if (rest.startsWith("@")) {
-            val end = rest.indexOf("@", startIndex = 1)
-            if (end > 1) {
-                pointer = rest.substring(0, end + 1) // includes both @
-                rest = rest.substring(end + 1).trim()
-            }
-        }
-
-        // Next token is tag
-        val nextSpace = rest.indexOf(' ')
-        if (nextSpace == -1) {
-            tag = rest
-            rest = ""
-        } else {
-            tag = rest.substring(0, nextSpace)
-            rest = rest.substring(nextSpace + 1)
-        }
-
-        value = rest.ifBlank { null }
         return Token(level, pointer, tag, value)
+    }
+
+    /** Extract pointer of form "@...@" if present at start. */
+    private fun extractPointer(text: String): String? =
+        if (text.startsWith("@")) text.indexOf('@', startIndex = 1)
+            .takeIf { it > 1 }
+            ?.let { text.substring(0, it + 1) }
+        else null
+
+    /** Split into (tag, value). */
+    private fun splitTagAndValue(text: String): Pair<String, String?> {
+        val nextSpace = text.indexOf(' ')
+        return if (nextSpace == -1) text to null
+        else text.substring(0, nextSpace) to text.substring(nextSpace + 1).ifBlank { null }
     }
 
     /**
      * Merge CONC/CONT with previous text node values.
-     * We keep them as separate nodes in the tree, but for parsing helper fields we will stitch values.
-     * Here we only normalize raw lines so a single logical line value can be reconstructed if needed.
+     * We only normalize raw lines so a single logical line can be reconstructed if needed.
      */
-    private fun unfoldLines(lines: List<String>): List<String> = lines
+    private fun unfoldLines(lines: Sequence<String>): Sequence<String> = lines
 }
 
 /** ------- Mapping (Nodes -> Domain) ------- */
@@ -141,42 +113,19 @@ object Mapper {
         val individuals = mutableMapOf<String, Individual>()
         val families = mutableMapOf<String, Family>()
 
-        for (n in doc.nodes) {
-            when (n.tag) {
+        for (node in doc.nodes) {
+            when (node.tag) {
                 "INDI" -> {
-                    val id = n.pointer ?: n.value ?: "UNKNOWN"
-                    individuals[id] = toIndividual(id, n)
+                    val id = node.pointer ?: node.value ?: "UNKNOWN"
+                    individuals[id] = IndividualDtoToModelMapper(id)(node)
                 }
                 "FAM" -> {
-                    val id = n.pointer ?: n.value ?: "UNKNOWN"
-                    families[id] = toFamily(id, n)
+                    val id = node.pointer ?: node.value ?: "UNKNOWN"
+                    families[id] = toFamily(id, node)
                 }
             }
         }
         return GedcomIndex(individuals, families)
-    }
-
-    private fun toIndividual(id: String, node: GedcomNode): Individual {
-        val nameNodes = node.children.filter { it.tag == "NAME" }
-        val givenNames = mutableListOf<String>()
-        var lastName = "Unknown"
-
-        if (nameNodes.isEmpty()) givenNames.add("Unknown")
-        nameNodes.forEach { n ->
-            val raw = n.value ?: return@forEach
-            val parts = raw.split("/")
-            val given = parts.firstOrNull()?.trim().takeUnless { it.isNullOrEmpty() } ?: "Unknown"
-            val surname = parts.getOrNull(1)?.trim().takeUnless { it.isNullOrEmpty() }
-
-            givenNames.add(given)
-            lastName = surname ?: node.children.firstOrNull { it.tag == "SURN" }?.value ?: "Unknown"
-        }
-        val sex = node.children.firstOrNull { it.tag == "SEX" }?.value
-        val birth = node.children.firstOrNull { it.tag == "BIRT" }?.let { toEvent("BIRT", it) }
-        val death = node.children.firstOrNull { it.tag == "DEAT" }?.let { toEvent("DEAT", it) }
-        val famc = node.children.filter { it.tag == "FAMC" }.mapNotNull { it.value ?: it.pointer }
-        val fams = node.children.filter { it.tag == "FAMS" }.mapNotNull { it.value ?: it.pointer }
-        return Individual(id, givenNames, lastName, sex, birth, death, famc, fams)
     }
 
     private fun toFamily(id: String, node: GedcomNode): Family {
@@ -246,85 +195,85 @@ object DateParsing {
 }
 
 /** ------- Queries ------- */
-object Queries {
-
-    /**
-     * Compute generation index relative to a root person: root=0, parents=-1, children=+1, etc.
-     * Uses family links (FAMC/FAMS/HUSB/WIFE/CHIL).
-     */
-    fun generationMap(index: GedcomIndex, rootId: String): Map<String, Int> {
-        val gen = mutableMapOf<String, Int>()
-        val queue = ArrayDeque<String>()
-        gen[rootId] = 0
-        queue.add(rootId)
-
-        while (queue.isNotEmpty()) {
-            val id = queue.removeFirst()
-            val g = gen[id]!!
-            val ind = index.individuals[id] ?: continue
-
-            // parents via FAMC -> family -> HUSB/WIFE
-            for (famId in ind.famc) {
-                val fam = index.families[famId] ?: continue
-                listOfNotNull(fam.husband, fam.wife).forEach { pId ->
-                    if (pId !in gen) {
-                        gen[pId] = g - 1; queue.add(pId)
-                    }
-                }
-                // siblings in same generation
-                fam.children.forEach { cId ->
-                    if (cId !in gen) {
-                        gen[cId] = g; queue.add(cId)
-                    }
-                }
-            }
-
-            // spouses & children via FAMS
-            for (famId in ind.fams) {
-                val fam = index.families[famId] ?: continue
-                listOfNotNull(fam.husband, fam.wife).forEach { sId ->
-                    if (sId != id && sId !in gen) {
-                        gen[sId] = g; queue.add(sId)
-                    }
-                }
-                fam.children.forEach { cId ->
-                    if (cId !in gen) {
-                        gen[cId] = g + 1; queue.add(cId)
-                    }
-                }
-            }
-        }
-        return gen
-    }
-
-    fun sameGeneration(index: GedcomIndex, personId: String): List<Individual> {
-        val gmap = generationMap(index, personId)
-        val g0 = gmap[personId] ?: 0
-        return gmap.filterValues { it == g0 }.keys.mapNotNull { index.individuals[it] }
-    }
-
-    fun generationsAboveBelow(index: GedcomIndex, personId: String): Pair<Int, Int> {
-        val gmap = generationMap(index, personId)
-        val me = gmap[personId] ?: 0
-        val minG = gmap.values.minOrNull() ?: me
-        val maxG = gmap.values.maxOrNull() ?: me
-        return (me - minG) to (maxG - me)
-    }
-
-    fun sortByBirthEldestToYoungest(people: List<Individual>): List<Individual> =
-        people.sortedWith(
-            compareBy(
-                { it.birth?.parsedDate ?: LocalDate(9999, 12, 31) },
-                { it.givenNames.firstOrNull() ?: "" }
-            ))
-
-    fun birthdaysCsv(index: GedcomIndex): String {
-        val sb = StringBuilder().appendLine("Name,Birthday")
-        index.individuals.values.forEach { ind ->
-            val name = ind.givenNames.firstOrNull() ?: "Unknown"
-            val date = ind.birth?.date ?: ""
-            sb.appendLine("\"$name\",\"$date\"")
-        }
-        return sb.toString()
-    }
-}
+//object Queries {
+//
+//    /**
+//     * Compute generation index relative to a root person: root=0, parents=-1, children=+1, etc.
+//     * Uses family links (FAMC/FAMS/HUSB/WIFE/CHIL).
+//     */
+//    fun generationMap(index: GedcomIndex, rootId: String): Map<String, Int> {
+//        val gen = mutableMapOf<String, Int>()
+//        val queue = ArrayDeque<String>()
+//        gen[rootId] = 0
+//        queue.add(rootId)
+//
+//        while (queue.isNotEmpty()) {
+//            val id = queue.removeFirst()
+//            val g = gen[id]!!
+//            val ind = index.individuals[id] ?: continue
+//
+//            // parents via FAMC -> family -> HUSB/WIFE
+//            for (famId in ind.famc) {
+//                val fam = index.families[famId] ?: continue
+//                listOfNotNull(fam.husband, fam.wife).forEach { pId ->
+//                    if (pId !in gen) {
+//                        gen[pId] = g - 1; queue.add(pId)
+//                    }
+//                }
+//                // siblings in same generation
+//                fam.children.forEach { cId ->
+//                    if (cId !in gen) {
+//                        gen[cId] = g; queue.add(cId)
+//                    }
+//                }
+//            }
+//
+//            // spouses & children via FAMS
+//            for (famId in ind.fams) {
+//                val fam = index.families[famId] ?: continue
+//                listOfNotNull(fam.husband, fam.wife).forEach { sId ->
+//                    if (sId != id && sId !in gen) {
+//                        gen[sId] = g; queue.add(sId)
+//                    }
+//                }
+//                fam.children.forEach { cId ->
+//                    if (cId !in gen) {
+//                        gen[cId] = g + 1; queue.add(cId)
+//                    }
+//                }
+//            }
+//        }
+//        return gen
+//    }
+//
+//    fun sameGeneration(index: GedcomIndex, personId: String): List<Individual> {
+//        val gmap = generationMap(index, personId)
+//        val g0 = gmap[personId] ?: 0
+//        return gmap.filterValues { it == g0 }.keys.mapNotNull { index.individuals[it] }
+//    }
+//
+//    fun generationsAboveBelow(index: GedcomIndex, personId: String): Pair<Int, Int> {
+//        val gmap = generationMap(index, personId)
+//        val me = gmap[personId] ?: 0
+//        val minG = gmap.values.minOrNull() ?: me
+//        val maxG = gmap.values.maxOrNull() ?: me
+//        return (me - minG) to (maxG - me)
+//    }
+//
+//    fun sortByBirthEldestToYoungest(people: List<Individual>): List<Individual> =
+//        people.sortedWith(
+//            compareBy(
+//                { it.birth?.parsedDate ?: LocalDate(9999, 12, 31) },
+//                { it.givenNames.firstOrNull() ?: "" }
+//            ))
+//
+//    fun birthdaysCsv(index: GedcomIndex): String {
+//        val sb = StringBuilder().appendLine("Name,Birthday")
+//        index.individuals.values.forEach { ind ->
+//            val name = ind.givenNames.firstOrNull() ?: "Unknown"
+//            val date = ind.birth?.date ?: ""
+//            sb.appendLine("\"$name\",\"$date\"")
+//        }
+//        return sb.toString()
+//    }
+//}
