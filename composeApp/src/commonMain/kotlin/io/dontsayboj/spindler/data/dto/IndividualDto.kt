@@ -34,11 +34,6 @@ data class IndividualDto(
     val creationDate: LocalDate? = null, // CREA
 ) {
     companion object {
-        const val NAME_TAG = "NAME"
-        const val SEX_TAG = "SEX"
-        const val FAMILY_ID_AS_CHILD_TAG = "FAMC"
-        const val FAMILY_ID_AS_SPOUSE_TAG = "FAMS"
-        const val CHANGE_DATE_TAG = "CHAN"
-        const val CREATION_DATE_TAG = "CREA"
+
     }
 }
