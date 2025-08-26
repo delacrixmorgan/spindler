@@ -6,7 +6,6 @@ import io.dontsayboj.spindler.domain.enum.Sex.U
 import io.dontsayboj.spindler.domain.enum.Sex.X
 import kotlin.enums.EnumEntries
 
-
 /**
  * g7:enumset-SEX
  *
