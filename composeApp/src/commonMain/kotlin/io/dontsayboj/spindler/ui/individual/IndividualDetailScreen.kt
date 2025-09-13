@@ -1,17 +1,25 @@
 package io.dontsayboj.spindler.ui.individual
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.ChevronRight
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.ListItem
 import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.navigation.NavHostController
 import io.dontsayboj.spindler.data.SpindlerRepository
+import io.dontsayboj.spindler.nav.Routes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -45,7 +53,49 @@ fun IndividualDetailScreen(
             )
         },
         content = {
+            LazyColumn(Modifier.padding(it)) {
+                item { ListItem(headlineContent = { Text("Nodes Size") }, trailingContent = { Text(individual.nodes.size.toString()) }) }
+                item { ListItem(headlineContent = { Text("Names Nodes") }, supportingContent = { Text(individual.names.joinToString(", ")) }) }
+                item { HorizontalDivider() }
 
+                item { ListItem(headlineContent = { Text("Names") }, supportingContent = { Text(individual.formattedName) }) }
+                item { ListItem(headlineContent = { Text("Sex") }, supportingContent = { Text(individual.sex.name) }) }
+                item { ListItem(headlineContent = { Text("Birth Date") }, supportingContent = { Text(individual.birthDate ?: "N/A") }) }
+                item { ListItem(headlineContent = { Text("Birth Place") }, supportingContent = { Text(individual.birthPlace ?: "N/A") }) }
+                item { ListItem(headlineContent = { Text("Death Date") }, supportingContent = { Text(individual.deathDate ?: "N/A") }) }
+                item { HorizontalDivider() }
+
+                item {
+                    individual.familyIDAsChild?.let { familyID ->
+                        ListItem(
+                            modifier = Modifier.clickable { navHostController.navigate(Routes.FamilyDetail(id = familyID)) },
+                            headlineContent = { Text("FamilyID as Child") },
+                            supportingContent = { Text(familyID) },
+                            trailingContent = { Icon(Icons.Rounded.ChevronRight, null) }
+                        )
+                    } ?: ListItem(
+                        headlineContent = { Text("FamilyID as Child") },
+                        supportingContent = { Text("N/A") }
+                    )
+                }
+                item {
+                    individual.familyIDAsSpouse?.let { familyID ->
+                        ListItem(
+                            modifier = Modifier.clickable { navHostController.navigate(Routes.FamilyDetail(id = familyID)) },
+                            headlineContent = { Text("FamilyID as Spouse") },
+                            supportingContent = { Text(familyID) },
+                            trailingContent = { Icon(Icons.Rounded.ChevronRight, null) }
+                        )
+                    } ?: ListItem(
+                        headlineContent = { Text("FamilyID as Spouse") },
+                        supportingContent = { Text("N/A") }
+                    )
+                }
+                item { HorizontalDivider() }
+
+                item { ListItem(headlineContent = { Text("Change Date") }, supportingContent = { Text(individual.changeDate ?: "N/A") }) }
+                item { ListItem(headlineContent = { Text("Creation Date") }, supportingContent = { Text(individual.creationDate ?: "N/A") }) }
+            }
         }
     )
 }
