@@ -13,7 +13,7 @@ object Gedcom {
         return parseString(text)
     }
 
-    fun parseString(text: String): Pair<GedcomDocument, GedcomIndex> {
+    private suspend fun parseString(text: String): Pair<GedcomDocument, GedcomIndex> {
         val doc = GedcomParser.parseString(text)
         val individuals = mutableMapOf<String, Individual>()
         val families = mutableMapOf<String, Family>()
