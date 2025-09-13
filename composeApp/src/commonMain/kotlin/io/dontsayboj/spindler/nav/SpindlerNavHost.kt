@@ -13,10 +13,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import io.dontsayboj.spindler.ui.DashboardScreen
-import io.dontsayboj.spindler.ui.DetailsScreen
-import io.dontsayboj.spindler.ui.FamilyScreen
-import io.dontsayboj.spindler.ui.IndividualScreen
+import io.dontsayboj.spindler.ui.family.FamilyDetailScreen
+import io.dontsayboj.spindler.ui.family.FamilyScreen
+import io.dontsayboj.spindler.ui.individual.IndividualDetailScreen
+import io.dontsayboj.spindler.ui.individual.IndividualScreen
 
 @Composable
 fun SpindlerNavHost(navHostController: NavHostController = rememberNavController()) {
@@ -63,7 +65,11 @@ enum class DashboardBottomNavItem(
 }
 
 fun NavGraphBuilder.formGraph(navHostController: NavHostController) {
-    composable<Routes.Details> {
-        DetailsScreen(id = it.id)
+    composable<Routes.IndividualDetail> {
+        IndividualDetailScreen(id = it.toRoute<Routes.IndividualDetail>().id, navHostController = navHostController)
+    }
+
+    composable<Routes.FamilyDetail> {
+        FamilyDetailScreen(id = it.toRoute<Routes.FamilyDetail>().id, navHostController = navHostController)
     }
 }

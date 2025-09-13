@@ -11,6 +11,9 @@ data class Individual(
     val id: String,
     val nodes: List<Gedcom.GedcomNode>,
 ) {
+    val formattedName: String
+        get() = names.joinToString(" ") { it.text }
+
     val names: List<NameStructure>
         get() = nodes
             .filter { it.tag == Tag.NAME }

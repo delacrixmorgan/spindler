@@ -7,5 +7,8 @@ sealed class Routes {
     data object Dashboard : Routes()
 
     @Serializable
-    data class Details(val id: String) : Routes()
+    data class IndividualDetail(val id: String) : Routes()
+
+    @Serializable
+    data class FamilyDetail(val id: String) : Routes()
 }

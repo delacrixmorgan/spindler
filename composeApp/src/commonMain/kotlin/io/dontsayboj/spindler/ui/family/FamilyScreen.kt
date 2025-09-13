@@ -1,5 +1,6 @@
-package io.dontsayboj.spindler.ui
+package io.dontsayboj.spindler.ui.family
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -17,6 +18,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import io.dontsayboj.spindler.data.SpindlerRepository
 import io.dontsayboj.spindler.data.utils.DateParsing
+import io.dontsayboj.spindler.nav.Routes
 
 @Composable
 fun FamilyScreen(
@@ -36,6 +38,7 @@ fun FamilyScreen(
                 val husband = individuals.find { it.id == family.husbandID }
                 val wife = individuals.find { it.id == family.wifeID }
                 ListItem(
+                    modifier = Modifier.clickable { navHostController.navigate(Routes.FamilyDetail(family.id)) },
                     overlineContent = { Text(family.id) },
                     headlineContent = { Text(listOfNotNull(husband?.names?.firstOrNull()?.text, wife?.names?.firstOrNull()?.text).joinToString(" + ")) },
                     trailingContent = {

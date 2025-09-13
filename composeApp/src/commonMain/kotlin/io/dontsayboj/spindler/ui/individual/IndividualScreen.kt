@@ -1,5 +1,6 @@
-package io.dontsayboj.spindler.ui
+package io.dontsayboj.spindler.ui.individual
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -17,6 +18,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import io.dontsayboj.spindler.data.SpindlerRepository
 import io.dontsayboj.spindler.data.utils.DateParsing
+import io.dontsayboj.spindler.nav.Routes
 
 @Composable
 fun IndividualScreen(
@@ -24,7 +26,6 @@ fun IndividualScreen(
     navHostController: NavHostController
 ) {
     val individuals by SpindlerRepository.individuals.collectAsStateWithLifecycle()
-
     Box(
         Modifier
             .fillMaxSize()
@@ -34,8 +35,9 @@ fun IndividualScreen(
             items(count = individuals.size, key = { individuals[it].id }) { index ->
                 val individual = individuals[index]
                 ListItem(
+                    modifier = Modifier.clickable { navHostController.navigate(Routes.IndividualDetail(individual.id)) },
                     overlineContent = { Text(individual.id) },
-                    headlineContent = { Text(individual.names.joinToString(" ") { it.text }) },
+                    headlineContent = { Text(individual.formattedName) },
                     trailingContent = {
                         Column(horizontalAlignment = Alignment.End) {
                             individual.birthDate?.let { Text(DateParsing.tryParseDate(it)?.toString() ?: it) }

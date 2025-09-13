@@ -21,4 +21,12 @@ object SpindlerRepository {
         _individuals.value = index.individuals.values.toList()
         _families.value = index.families.values.toList()
     }
+
+    fun getIndividual(id: String?): Individual? {
+        return individuals.value.find { it.id == id }
+    }
+
+    fun getFamily(id: String?): Family? {
+        return families.value.find { it.id == id }
+    }
 }
