@@ -10,24 +10,39 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
+import io.dontsayboj.spindler.Gedcom
 import io.dontsayboj.spindler.data.utils.DateParsing
+import io.dontsayboj.spindler.domain.model.Family
 import io.dontsayboj.spindler.domain.model.Individual
+import kotlinx.coroutines.launch
 
 @Composable
 fun IndividualScreen(
     innerPadding: PaddingValues,
-    individuals: List<Individual>
+    navHostController: NavHostController
 ) {
+    val scope = rememberCoroutineScope()
+    val individuals = mutableStateOf(emptyList<Individual>())
+    val families = mutableStateOf(emptyList<Family>())
+    scope.launch {
+        val path = "files/sample.ged"
+        val (_, index) = Gedcom.parseFile(path)
+        individuals.value = index.individuals.values.toList()
+        families.value = index.families.values.toList()
+    }
     Box(
         Modifier
             .fillMaxSize()
             .padding(innerPadding)
     ) {
         LazyColumn(state = rememberLazyListState()) {
-            items(count = individuals.size, key = { individuals[it].id }) { index ->
-                val individual = individuals[index]
+            items(count = individuals.value.size, key = { individuals.value[it].id }) { index ->
+                val individual = individuals.value[index]
                 ListItem(
                     overlineContent = { Text(individual.id) },
                     headlineContent = { Text(individual.names.joinToString(" ") { it.text }) },
