@@ -58,7 +58,9 @@ fun IndividualDetailScreen(
                 item { ListItem(headlineContent = { Text("Names Nodes") }, supportingContent = { Text(individual.names.joinToString(", ")) }) }
                 item { HorizontalDivider() }
 
-                item { ListItem(headlineContent = { Text("Names") }, supportingContent = { Text(individual.formattedName) }) }
+                item { ListItem(headlineContent = { Text("Name") }, supportingContent = { Text(individual.formattedName) }) }
+                item { ListItem(headlineContent = { Text("Given Names") }, supportingContent = { Text(individual.givenNames.joinToString(", ")) }) }
+                item { ListItem(headlineContent = { Text("Surnames") }, supportingContent = { Text(individual.surnames.joinToString(", ")) }) }
                 item { ListItem(headlineContent = { Text("Sex") }, supportingContent = { Text(individual.sex.name) }) }
                 item { ListItem(headlineContent = { Text("Birth Date") }, supportingContent = { Text(individual.birthDate ?: "N/A") }) }
                 item { ListItem(headlineContent = { Text("Birth Place") }, supportingContent = { Text(individual.birthPlace ?: "N/A") }) }

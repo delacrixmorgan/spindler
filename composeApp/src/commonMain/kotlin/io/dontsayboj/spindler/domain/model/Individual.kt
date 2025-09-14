@@ -11,15 +11,29 @@ data class Individual(
     val id: String,
     val nodes: List<Gedcom.GedcomNode>,
 ) {
-    val formattedName: String
-        get() = names.joinToString(" ") { it.text }
-
     val names: List<NameStructure>
         get() = nodes
             .filter { it.tag == Tag.NAME }
             .flatMap { it.children }
             .filter { NameTag.entries.firstOrNull { structure -> structure.name == it.tag && it.value?.isNotEmpty() == true } != null }
             .map { NameStructure(tag = NameTag.valueOf(it.tag), text = it.value ?: "") }
+
+    val givenNames: List<String>
+        get() = nodes
+            .filter { it.tag == Tag.NAME }
+            .flatMap { it.children }
+            .filter { it.tag == NameTag.GIVN.name }
+            .mapNotNull { it.value }
+
+    val surnames: List<String>
+        get() = nodes
+            .filter { it.tag == Tag.NAME }
+            .flatMap { it.children }
+            .filter { it.tag == NameTag.SURN.name }
+            .mapNotNull { it.value }
+
+    val formattedName: String
+        get() = (givenNames + surnames).joinToString(" ")
 
     val sex: Sex
         get() = Sex.entries.getOrDefault(nodes.firstOrNull { it.tag == Tag.SEX }?.value)
