@@ -17,6 +17,7 @@ object Tag {
     const val EDUCATION = "EDUC"
     const val RELIGION = "RELI"
 
+    const val OBJECT = "OBJE"
     const val DATE = "DATE"
     const val CHANGE_DATE = "CHAN"
     const val CREATION_DATE = "CREA"

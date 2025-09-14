@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.navigation.NavHostController
 import io.dontsayboj.spindler.data.SpindlerRepository
+import io.dontsayboj.spindler.domain.enum.Tag
 import io.dontsayboj.spindler.nav.Routes
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -52,13 +53,22 @@ fun IndividualDetailScreen(
                 },
             )
         },
-        content = {
+        content = { it ->
             LazyColumn(Modifier.padding(it)) {
-                item { ListItem(headlineContent = { Text("Nodes Size") }, trailingContent = { Text(individual.nodes.size.toString()) }) }
+                item {
+                    ListItem(headlineContent = { Text("Node Tags (${individual.nodes.size})") }, supportingContent = {
+                        Text(individual.nodes.joinToString("\n") {
+                            if (it.tag == Tag.OBJECT) {
+                                Tag.OBJECT + ": " + it.value
+                            } else {
+                                it.tag
+                            }
+                        })
+                    })
+                }
                 item { ListItem(headlineContent = { Text("Names Nodes") }, supportingContent = { Text(individual.names.joinToString(", ")) }) }
                 item { HorizontalDivider() }
 
-                item { ListItem(headlineContent = { Text("Name") }, supportingContent = { Text(individual.formattedName) }) }
                 item { ListItem(headlineContent = { Text("Given Names") }, supportingContent = { Text(individual.givenNames.joinToString(", ")) }) }
                 item { ListItem(headlineContent = { Text("Surnames") }, supportingContent = { Text(individual.surnames.joinToString(", ")) }) }
                 item { ListItem(headlineContent = { Text("Sex") }, supportingContent = { Text(individual.sex.name) }) }
@@ -98,6 +108,11 @@ fun IndividualDetailScreen(
                     )
                 }
                 item { HorizontalDivider() }
+
+                if (individual.macFamilyTreeID?.isNotEmpty() == true) {
+                    item { ListItem(headlineContent = { Text("MacFamilyTree ID (_FID)") }, supportingContent = { Text(individual.macFamilyTreeID ?: "N/A") }) }
+                    item { HorizontalDivider() }
+                }
 
                 item { ListItem(headlineContent = { Text("Change Date") }, supportingContent = { Text(individual.changeDate ?: "N/A") }) }
                 item { ListItem(headlineContent = { Text("Creation Date") }, supportingContent = { Text(individual.creationDate ?: "N/A") }) }

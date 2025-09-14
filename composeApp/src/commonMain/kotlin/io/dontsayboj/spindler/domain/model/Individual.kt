@@ -1,6 +1,7 @@
 package io.dontsayboj.spindler.domain.model
 
 import io.dontsayboj.spindler.Gedcom
+import io.dontsayboj.spindler.domain.enum.MacFamilyTreeTag
 import io.dontsayboj.spindler.domain.enum.NameStructure
 import io.dontsayboj.spindler.domain.enum.NameTag
 import io.dontsayboj.spindler.domain.enum.Sex
@@ -60,6 +61,10 @@ data class Individual(
     val religion: String?
         get() = nodes
             .firstOrNull { it.tag == Tag.RELIGION }?.value
+
+    val macFamilyTreeID: String?
+        get() = nodes
+            .firstOrNull { it.tag == MacFamilyTreeTag.FID }?.value
 
     val familyIDAsChild: String?
         get() = nodes
