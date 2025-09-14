@@ -13,6 +13,10 @@ object Tag {
     const val BIRTH = "BIRT"
     const val PLACE = "PLAC"
     const val DEATH = "DEAT"
+
+    const val EDUCATION = "EDUC"
+    const val RELIGION = "RELI"
+
     const val DATE = "DATE"
     const val CHANGE_DATE = "CHAN"
     const val CREATION_DATE = "CREA"

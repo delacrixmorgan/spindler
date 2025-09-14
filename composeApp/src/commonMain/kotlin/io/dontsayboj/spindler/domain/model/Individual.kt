@@ -53,6 +53,14 @@ data class Individual(
             .firstOrNull { it.tag == Tag.DEATH }?.children
             ?.firstOrNull { it.tag == Tag.DATE }?.value
 
+    val education: String?
+        get() = nodes
+            .firstOrNull { it.tag == Tag.EDUCATION }?.value
+
+    val religion: String?
+        get() = nodes
+            .firstOrNull { it.tag == Tag.RELIGION }?.value
+
     val familyIDAsChild: String?
         get() = nodes
             .firstOrNull { it.tag == Tag.FAMILY_ID_AS_CHILD }?.value

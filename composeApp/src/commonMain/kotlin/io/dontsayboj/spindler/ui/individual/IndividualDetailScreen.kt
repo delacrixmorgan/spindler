@@ -67,6 +67,10 @@ fun IndividualDetailScreen(
                 item { ListItem(headlineContent = { Text("Death Date") }, supportingContent = { Text(individual.deathDate ?: "N/A") }) }
                 item { HorizontalDivider() }
 
+                item { ListItem(headlineContent = { Text("Education") }, supportingContent = { Text(individual.education ?: "N/A") }) }
+                item { ListItem(headlineContent = { Text("Religion") }, supportingContent = { Text(individual.religion ?: "N/A") }) }
+                item { HorizontalDivider() }
+
                 item {
                     individual.familyIDAsChild?.let { familyID ->
                         ListItem(
