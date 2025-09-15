@@ -7,9 +7,15 @@ import io.dontsayboj.spindler.domain.model.Individual
 class IndividualDtoToModelMapper(val id: String) : Mapper<Gedcom.GedcomNode, Individual> {
 
     override suspend fun invoke(input: Gedcom.GedcomNode): Individual {
+        val meaningfulChildren = input.children.filter { child ->
+            child.hasContent() && (child.value?.isNotBlank() == true ||
+                    child.pointer != null ||
+                    child.children.isNotEmpty())
+        }
+
         return Individual(
             id = id,
-            nodes = input.children,
+            nodes = meaningfulChildren,
         )
     }
 }

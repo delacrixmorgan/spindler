@@ -15,10 +15,16 @@ object Gedcom {
 
     private suspend fun parseString(text: String): Pair<GedcomDocument, GedcomIndex> {
         val doc = GedcomParser.parseString(text)
+        
+        // Additional pruning at the document level to ensure clean data
+        val prunedNodes = doc.nodes.map { it.pruneEmptyNodes() }
+        val prunedDoc = doc.copy(nodes = prunedNodes)
+        
         val individuals = mutableMapOf<String, Individual>()
         val families = mutableMapOf<String, Family>()
 
-        for (node in doc.nodes) {
+        // Use pruned document for processing
+        for (node in prunedDoc.nodes) {
             when (node.tag) {
                 "INDI" -> {
                     val id = node.pointer ?: node.value ?: "UNKNOWN"
@@ -31,7 +37,7 @@ object Gedcom {
             }
         }
         val index = GedcomIndex(individuals, families)
-        return doc to index
+        return prunedDoc to index
     }
 
     /**
@@ -43,7 +49,26 @@ object Gedcom {
         val tag: String,        // INDI, FAM, NAME, BIRT, DATE, etc.
         val value: String?,     // rest of the line text
         val children: MutableList<GedcomNode> = mutableListOf()
-    )
+    ) {
+        /**
+         * Check if node has meaningful content
+         */
+        fun hasContent(): Boolean {
+            return !value.isNullOrBlank() || pointer != null || children.any { it.hasContent() }
+        }
+        
+        /**
+         * Remove empty child nodes recursively
+         */
+        fun pruneEmptyNodes(): GedcomNode {
+            val prunedChildren = children
+                .filter { it.hasContent() }
+                .map { it.pruneEmptyNodes() }
+                .toMutableList()
+            
+            return this.copy(children = prunedChildren)
+        }
+    }
 
     /** Root document holding top-level nodes. */
     data class GedcomDocument(
@@ -70,6 +95,13 @@ object Gedcom {
 
             for (line in lines) {
                 val token = tokenize(line)?.takeIf { line.isNotBlank() } ?: continue
+                
+                // Skip tokens with no meaningful content unless they are structural tags
+                if (token.value.isNullOrBlank() && token.pointer == null && 
+                    !isStructuralTag(token.tag)) {
+                    continue
+                }
+                
                 val node = GedcomNode(token.level, token.pointer, token.tag, token.value)
 
                 // Ensure correct parent based on GEDCOM level
@@ -80,7 +112,9 @@ object Gedcom {
                 stack += node
             }
 
-            return GedcomDocument(rootChildren)
+            // Prune empty nodes from the parsed tree
+            val prunedChildren = rootChildren.map { it.pruneEmptyNodes() }
+            return GedcomDocument(prunedChildren)
         }
 
         /** Simple token structure for one GEDCOM line. */
@@ -112,6 +146,18 @@ object Gedcom {
             val nextSpace = text.indexOf(' ')
             return if (nextSpace == -1) text to null
             else text.substring(0, nextSpace) to text.substring(nextSpace + 1).ifBlank { null }
+        }
+
+        /**
+         * Helper method to identify structural GEDCOM tags that should be kept even if empty
+         */
+        private fun isStructuralTag(tag: String): Boolean {
+            return tag in setOf(
+                "INDI", "FAM", "NAME", "BIRT", "DEAT", "MARR", 
+                "DATE", "PLAC", "SEX", "HUSB", "WIFE", "CHIL",
+                "FAMC", "FAMS", "SOUR", "NOTE", "OBJE", "HEAD",
+                "TRLR", "SUBM", "GEDC", "CHAR", "VERS", "FORM"
+            )
         }
 
         /**
