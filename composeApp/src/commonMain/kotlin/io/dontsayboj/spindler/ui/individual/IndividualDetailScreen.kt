@@ -53,8 +53,8 @@ fun IndividualDetailScreen(
                 },
             )
         },
-        content = { it ->
-            LazyColumn(Modifier.padding(it)) {
+        content = { innerPadding ->
+            LazyColumn(Modifier.padding(innerPadding)) {
                 item {
                     ListItem(headlineContent = { Text("Node Tags (${individual.nodes.size})") }, supportingContent = {
                         Text(individual.nodes.joinToString("\n") {
@@ -69,7 +69,7 @@ fun IndividualDetailScreen(
                 item { ListItem(headlineContent = { Text("Names Nodes") }, supportingContent = { Text(individual.names.joinToString(", ")) }) }
                 item { HorizontalDivider() }
 
-                item { ListItem(headlineContent = { Text("Given Names") }, supportingContent = { Text(individual.givenNames.joinToString(", ")) }) }
+                item { ListItem(headlineContent = { Text("Given Names") }, supportingContent = { Text(individual.givenNames.joinToString(", ").ifEmpty { "N/A" }) }) }
                 item { ListItem(headlineContent = { Text("Surnames") }, supportingContent = { Text(individual.surnames.joinToString(", ")) }) }
                 item { ListItem(headlineContent = { Text("Sex") }, supportingContent = { Text(individual.sex.name) }) }
                 item { ListItem(headlineContent = { Text("Birth Date") }, supportingContent = { Text(individual.birthDate ?: "N/A") }) }

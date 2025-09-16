@@ -62,10 +62,6 @@ data class Individual(
         get() = nodes
             .firstOrNull { it.tag == Tag.RELIGION }?.value
 
-    val macFamilyTreeID: String?
-        get() = nodes
-            .firstOrNull { it.tag == MacFamilyTreeTag.FID }?.value
-
     val familyIDAsChild: String?
         get() = nodes
             .firstOrNull { it.tag == Tag.FAMILY_ID_AS_CHILD }?.value
@@ -73,6 +69,10 @@ data class Individual(
     val familyIDAsSpouse: String?
         get() = nodes
             .firstOrNull { it.tag == Tag.FAMILY_ID_AS_SPOUSE }?.value
+
+    val macFamilyTreeID: String?
+        get() = nodes
+            .firstOrNull { it.tag == MacFamilyTreeTag.FID }?.value
 
     val changeDate: String?
         get() = nodes
