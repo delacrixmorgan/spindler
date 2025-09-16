@@ -9,7 +9,8 @@ object DateParsing {
         "JUL" to 7, "AUG" to 8, "SEP" to 9, "OCT" to 10, "NOV" to 11, "DEC" to 12
     )
 
-    fun tryParseDate(raw: String): LocalDate? {
+    fun tryParseDate(raw: String?): LocalDate? {
+        if (raw.isNullOrBlank()) return null
         val s = raw.trim().uppercase()
 
         // Examples: 1 JAN 1900 | JAN 1900 | 1900

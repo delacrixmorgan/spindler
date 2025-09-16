@@ -1,12 +1,14 @@
 package io.dontsayboj.spindler.domain.model
 
 import io.dontsayboj.spindler.Gedcom
+import io.dontsayboj.spindler.data.utils.DateParsing
 import io.dontsayboj.spindler.domain.enum.MacFamilyTreeTag
 import io.dontsayboj.spindler.domain.enum.NameStructure
 import io.dontsayboj.spindler.domain.enum.NameTag
 import io.dontsayboj.spindler.domain.enum.Sex
 import io.dontsayboj.spindler.domain.enum.Tag
 import io.dontsayboj.spindler.domain.enum.getOrDefault
+import kotlinx.datetime.LocalDate
 
 data class Individual(
     val id: String,
@@ -39,20 +41,32 @@ data class Individual(
     val sex: Sex
         get() = Sex.entries.getOrDefault(nodes.firstOrNull { it.tag == Tag.SEX }?.value)
 
-    val birthDate: String?
+    val birthDateRaw: String?
         get() = nodes
             .firstOrNull { it.tag == Tag.BIRTH }?.children
             ?.firstOrNull { it.tag == Tag.DATE }?.value
+
+    val birthDate: LocalDate?
+        get() = DateParsing.tryParseDate(birthDateRaw)
+
+    val birthDateFormatted: String
+        get() = birthDate?.toString() ?: "~${birthDateRaw ?: "N/A"}"
 
     val birthPlace: String?
         get() = nodes
             .firstOrNull { it.tag == Tag.BIRTH }?.children
             ?.firstOrNull { it.tag == Tag.PLACE }?.value
 
-    val deathDate: String?
+    val deathDateRaw: String?
         get() = nodes
             .firstOrNull { it.tag == Tag.DEATH }?.children
             ?.firstOrNull { it.tag == Tag.DATE }?.value
+
+    val deathDate: LocalDate?
+        get() = DateParsing.tryParseDate(deathDateRaw)
+
+    val deathDateFormatted: String
+        get() = deathDate?.toString() ?: "~${deathDateRaw ?: "N/A"}"
 
     val education: String?
         get() = nodes

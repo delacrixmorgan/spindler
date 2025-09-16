@@ -70,7 +70,7 @@ fun FamilyDetailScreen(
                 }
                 item { HorizontalDivider() }
 
-                item { ListItem(headlineContent = { Text("Marriage Date") }, supportingContent = { Text(family.marriageDate ?: "N/A") }) }
+                item { ListItem(headlineContent = { Text("Marriage Date") }, supportingContent = { Text(family.marriageDateFormatted) }) }
                 item { ListItem(headlineContent = { Text("Marriage Place") }, supportingContent = { Text(family.marriagePlace ?: "N/A") }) }
                 husband?.let {
                     item {
@@ -99,7 +99,7 @@ fun FamilyDetailScreen(
                     ListItem(
                         modifier = Modifier.clickable { navHostController.navigate(Routes.IndividualDetail(id = childIndividual?.id!!)) },
                         headlineContent = { Text("Child #${index + 1} – ${childIndividual?.formattedName ?: "N/A"}") },
-                        supportingContent = { Text("Birth Date: ${childIndividual?.birthDate ?: "N/A"}") },
+                        supportingContent = { Text("Birth Date: ${childIndividual?.birthDateFormatted}") },
                         trailingContent = { Icon(Icons.Rounded.ChevronRight, null) }
                     )
                 }

@@ -40,7 +40,7 @@ fun IndividualScreen(
                     headlineContent = { Text(individual.formattedName) },
                     trailingContent = {
                         Column(horizontalAlignment = Alignment.End) {
-                            individual.birthDate?.let { Text(DateParsing.tryParseDate(it)?.toString() ?: it) }
+                            individual.birthDateRaw?.let { Text(DateParsing.tryParseDate(it)?.toString() ?: it) }
                             individual.birthPlace?.let { Text(it) }
                         }
                     }

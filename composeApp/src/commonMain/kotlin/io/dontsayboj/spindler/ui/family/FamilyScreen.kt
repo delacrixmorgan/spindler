@@ -43,7 +43,7 @@ fun FamilyScreen(
                     headlineContent = { Text(listOfNotNull(husband?.names?.firstOrNull()?.text, wife?.names?.firstOrNull()?.text).joinToString(" + ")) },
                     trailingContent = {
                         Column(horizontalAlignment = Alignment.End) {
-                            family.marriageDate?.let { Text(DateParsing.tryParseDate(it)?.toString() ?: it) }
+                            family.marriageDateRaw?.let { Text(DateParsing.tryParseDate(it)?.toString() ?: it) }
                             family.marriagePlace?.let { Text(it) }
                         }
                     }

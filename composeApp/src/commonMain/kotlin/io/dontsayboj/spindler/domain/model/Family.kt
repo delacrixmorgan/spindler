@@ -1,16 +1,24 @@
 package io.dontsayboj.spindler.domain.model
 
 import io.dontsayboj.spindler.Gedcom
+import io.dontsayboj.spindler.data.utils.DateParsing
 import io.dontsayboj.spindler.domain.enum.MacFamilyTreeTag
 import io.dontsayboj.spindler.domain.enum.Tag
+import kotlinx.datetime.LocalDate
 
 data class Family(
     val id: String,
     val nodes: List<Gedcom.GedcomNode>,
 ) {
-    val marriageDate: String?
+    val marriageDateRaw: String?
         get() = nodes.firstOrNull { it.tag == Tag.MARRIAGE }?.children
             ?.firstOrNull { it.tag == Tag.DATE }?.value
+
+    val marriageDate: LocalDate?
+        get() = DateParsing.tryParseDate(marriageDateRaw)
+
+    val marriageDateFormatted: String
+        get() = marriageDate?.toString() ?: "~${marriageDateRaw ?: "N/A"}"
 
     val marriagePlace: String?
         get() = nodes.firstOrNull { it.tag == Tag.MARRIAGE }?.children
