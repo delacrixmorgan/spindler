@@ -1,6 +1,6 @@
 package io.dontsayboj.spindler.data
 
-import io.dontsayboj.spindler.Gedcom
+import io.dontsayboj.spindler.data.local.SpindlerLocalDataSource
 import io.dontsayboj.spindler.domain.model.Family
 import io.dontsayboj.spindler.domain.model.Individual
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,9 +15,9 @@ object SpindlerRepository {
     val individuals: StateFlow<List<Individual>> = _individuals.asStateFlow()
     val families: StateFlow<List<Family>> = _families.asStateFlow()
 
-    suspend fun loadData(path: String = "files/sample.ged") {
+    suspend fun loadData() {
         if (isDataLoaded) return
-        val (_, index) = Gedcom.parseFile(path)
+        val index = SpindlerLocalDataSource.getData()
         _individuals.value = index.individuals.values.toList()
         _families.value = index.families.values.toList()
     }
