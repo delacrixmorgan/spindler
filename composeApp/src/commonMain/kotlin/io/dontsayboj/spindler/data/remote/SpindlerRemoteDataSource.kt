@@ -15,7 +15,6 @@ import io.ktor.client.request.headers
 import io.ktor.http.HttpHeaders
 
 object SpindlerRemoteDataSource {
-    private val gedcomIndexDtoToModelMapper: GedcomIndexDtoToModelMapper by lazy { GedcomIndexDtoToModelMapper() }
 
     private val httpClient = HttpClient {
         install(HttpTimeout) {
@@ -34,6 +33,8 @@ object SpindlerRemoteDataSource {
             exponentialDelay()
         }
     }
+
+    private val gedcomIndexDtoToModelMapper: GedcomIndexDtoToModelMapper by lazy { GedcomIndexDtoToModelMapper() }
 
     suspend fun loadData(url: String, headers: Map<String, String>? = null): GedcomIndex {
         try {
@@ -54,7 +55,7 @@ object SpindlerRemoteDataSource {
         }
     }
 
-    fun close() {
+    private fun close() {
         httpClient.close()
     }
 }
