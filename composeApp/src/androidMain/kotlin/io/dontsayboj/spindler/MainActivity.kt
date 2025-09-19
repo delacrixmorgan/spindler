@@ -19,7 +19,7 @@ class MainActivity : ComponentActivity() {
                 App()
             }
             LaunchedEffect(Unit) {
-                SpindlerRepository.loadData()
+                SpindlerRepository.getLocalData()
             }
         }
     }

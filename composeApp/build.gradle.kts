@@ -42,10 +42,21 @@ kotlin {
 
             implementation(libs.androidx.navigation.compose)
             api(libs.kotlinx.datetime)
+            
+            // KTOR dependencies
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.logging)
+        }
+        androidMain.dependencies {
+            implementation(libs.ktor.client.okhttp)
+        }
+        iosMain.dependencies {
+            implementation(libs.ktor.client.darwin)
         }
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutinesSwing)
+            implementation(libs.ktor.client.cio)
         }
     }
 }
