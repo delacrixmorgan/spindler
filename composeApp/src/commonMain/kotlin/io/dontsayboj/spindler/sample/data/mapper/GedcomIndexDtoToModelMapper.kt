@@ -1,0 +1,30 @@
+package io.dontsayboj.spindler.sample.data.mapper
+
+import io.dontsayboj.spindler.sample.data.utils.Mapper
+import io.dontsayboj.spindler.sample.domain.model.Family
+import io.dontsayboj.spindler.sample.domain.model.GedcomIndex
+import io.dontsayboj.spindler.sample.domain.model.Individual
+
+class GedcomIndexDtoToModelMapper : Mapper<String, GedcomIndex> {
+    private val gedcomNodeDtoToModelMapper: GedcomNodeDtoToModelMapper by lazy { GedcomNodeDtoToModelMapper() }
+
+    override suspend fun invoke(input: String): GedcomIndex {
+        val nodes = gedcomNodeDtoToModelMapper(input).map { it.pruneEmptyNodes() }
+        val individuals = mutableMapOf<String, Individual>()
+        val families = mutableMapOf<String, Family>()
+
+        for (node in nodes) {
+            when (node.tag) {
+                "INDI" -> {
+                    val id = node.pointer ?: node.value ?: "UNKNOWN"
+                    individuals[id] = IndividualDtoToModelMapper(id)(node)
+                }
+                "FAM" -> {
+                    val id = node.pointer ?: node.value ?: "UNKNOWN"
+                    families[id] = FamilyDtoToModelMapper(id)(node)
+                }
+            }
+        }
+        return GedcomIndex(individuals, families)
+    }
+}
