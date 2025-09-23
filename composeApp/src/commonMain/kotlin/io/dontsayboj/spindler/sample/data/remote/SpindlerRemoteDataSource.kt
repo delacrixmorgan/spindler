@@ -1,7 +1,7 @@
 package io.dontsayboj.spindler.sample.data.remote
 
-import io.dontsayboj.spindler.sample.data.mapper.GedcomIndexDtoToModelMapper
-import io.dontsayboj.spindler.sample.domain.model.GedcomIndex
+import io.dontsayboj.spindler.domain.model.GedcomIndex
+import io.dontsayboj.spindler.mapper.GedcomIndexDtoToModelMapper
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.HttpRequestRetry

@@ -1,4 +1,4 @@
-package io.dontsayboj.spindler.sample.domain.enum
+package io.dontsayboj.spindler.domain.enum
 
 object MacFamilyTreeTag {
     const val FID = "_FID"

@@ -1,7 +1,7 @@
-package io.dontsayboj.spindler.sample.data.mapper
+package io.dontsayboj.spindler.mapper
 
-import io.dontsayboj.spindler.sample.data.utils.Mapper
-import io.dontsayboj.spindler.sample.domain.model.GedcomNode
+import io.dontsayboj.spindler.domain.model.GedcomNode
+import io.dontsayboj.spindler.utils.Mapper
 
 class GedcomNodeDtoToModelMapper : Mapper<String, List<GedcomNode>> {
 
@@ -28,8 +28,8 @@ class GedcomNodeDtoToModelMapper : Mapper<String, List<GedcomNode>> {
             while (stack.isNotEmpty() && stack.last().level >= node.level) {
                 stack.removeLast()
             }
-            (if (stack.isEmpty()) rootChildren else stack.last().children) += node
-            stack += node
+            (if (stack.isEmpty()) rootChildren else stack.last().children).plusAssign(node)
+            stack.plusAssign(node)
         }
 
         // Prune empty nodes from the parsed tree

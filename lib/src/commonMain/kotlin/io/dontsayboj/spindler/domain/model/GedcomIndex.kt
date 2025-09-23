@@ -1,4 +1,4 @@
-package io.dontsayboj.spindler.sample.domain.model
+package io.dontsayboj.spindler.domain.model
 
 data class GedcomIndex(
     val individuals: Map<String, Individual>,

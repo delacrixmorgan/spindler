@@ -1,9 +1,9 @@
-package io.dontsayboj.spindler.sample.domain.enum
+package io.dontsayboj.spindler.domain.enum
 
-import io.dontsayboj.spindler.sample.domain.enum.Sex.F
-import io.dontsayboj.spindler.sample.domain.enum.Sex.M
-import io.dontsayboj.spindler.sample.domain.enum.Sex.U
-import io.dontsayboj.spindler.sample.domain.enum.Sex.X
+import io.dontsayboj.spindler.domain.enum.Sex.F
+import io.dontsayboj.spindler.domain.enum.Sex.M
+import io.dontsayboj.spindler.domain.enum.Sex.U
+import io.dontsayboj.spindler.domain.enum.Sex.X
 import kotlin.enums.EnumEntries
 
 /**

@@ -1,4 +1,4 @@
-package io.dontsayboj.spindler.sample.data.utils
+package io.dontsayboj.spindler.utils
 
 import kotlinx.datetime.LocalDate
 

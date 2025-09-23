@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import io.dontsayboj.spindler.sample.data.SpindlerRepository
-import io.dontsayboj.spindler.sample.data.utils.DateParsing
 import io.dontsayboj.spindler.sample.nav.Routes
 
 @Composable
@@ -43,7 +42,7 @@ fun FamilyScreen(
                     headlineContent = { Text(listOfNotNull(husband?.names?.firstOrNull()?.text, wife?.names?.firstOrNull()?.text).joinToString(" + ")) },
                     trailingContent = {
                         Column(horizontalAlignment = Alignment.End) {
-                            family.marriageDateRaw?.let { Text(DateParsing.tryParseDate(it)?.toString() ?: it) }
+                            Text(family.marriageDateFormatted)
                             family.marriagePlace?.let { Text(it) }
                         }
                     }

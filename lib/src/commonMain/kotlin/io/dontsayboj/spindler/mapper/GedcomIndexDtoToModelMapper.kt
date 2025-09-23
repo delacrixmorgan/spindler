@@ -1,9 +1,9 @@
-package io.dontsayboj.spindler.sample.data.mapper
+package io.dontsayboj.spindler.mapper
 
-import io.dontsayboj.spindler.sample.data.utils.Mapper
-import io.dontsayboj.spindler.sample.domain.model.Family
-import io.dontsayboj.spindler.sample.domain.model.GedcomIndex
-import io.dontsayboj.spindler.sample.domain.model.Individual
+import io.dontsayboj.spindler.domain.model.Family
+import io.dontsayboj.spindler.domain.model.GedcomIndex
+import io.dontsayboj.spindler.domain.model.Individual
+import io.dontsayboj.spindler.utils.Mapper
 
 class GedcomIndexDtoToModelMapper : Mapper<String, GedcomIndex> {
     private val gedcomNodeDtoToModelMapper: GedcomNodeDtoToModelMapper by lazy { GedcomNodeDtoToModelMapper() }

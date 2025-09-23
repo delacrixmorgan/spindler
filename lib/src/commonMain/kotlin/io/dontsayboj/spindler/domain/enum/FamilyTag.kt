@@ -1,15 +1,15 @@
-package io.dontsayboj.spindler.sample.domain.enum
+package io.dontsayboj.spindler.domain.enum
 
-import io.dontsayboj.spindler.sample.domain.enum.FamilyEvent.ANUL
-import io.dontsayboj.spindler.sample.domain.enum.FamilyEvent.CENS
-import io.dontsayboj.spindler.sample.domain.enum.FamilyEvent.DIV
-import io.dontsayboj.spindler.sample.domain.enum.FamilyEvent.DIVF
-import io.dontsayboj.spindler.sample.domain.enum.FamilyEvent.ENGA
-import io.dontsayboj.spindler.sample.domain.enum.FamilyEvent.MARB
-import io.dontsayboj.spindler.sample.domain.enum.FamilyEvent.MARC
-import io.dontsayboj.spindler.sample.domain.enum.FamilyEvent.MARL
-import io.dontsayboj.spindler.sample.domain.enum.FamilyEvent.MARR
-import io.dontsayboj.spindler.sample.domain.enum.FamilyEvent.MARS
+import io.dontsayboj.spindler.domain.enum.FamilyEvent.ANUL
+import io.dontsayboj.spindler.domain.enum.FamilyEvent.CENS
+import io.dontsayboj.spindler.domain.enum.FamilyEvent.DIV
+import io.dontsayboj.spindler.domain.enum.FamilyEvent.DIVF
+import io.dontsayboj.spindler.domain.enum.FamilyEvent.ENGA
+import io.dontsayboj.spindler.domain.enum.FamilyEvent.MARB
+import io.dontsayboj.spindler.domain.enum.FamilyEvent.MARC
+import io.dontsayboj.spindler.domain.enum.FamilyEvent.MARL
+import io.dontsayboj.spindler.domain.enum.FamilyEvent.MARR
+import io.dontsayboj.spindler.domain.enum.FamilyEvent.MARS
 
 interface FamilyTag
 

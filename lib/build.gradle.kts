@@ -17,6 +17,11 @@ kotlin {
         }
     }
     jvm("desktop")
+    sourceSets {
+        commonMain.dependencies {
+            api(libs.kotlinx.datetime)
+        }
+    }
 }
 
 android {

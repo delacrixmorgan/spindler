@@ -1,7 +1,7 @@
 package io.dontsayboj.spindler.sample.data.local
 
-import io.dontsayboj.spindler.sample.domain.model.GedcomIndex
-import io.dontsayboj.spindler.sample.data.mapper.GedcomIndexDtoToModelMapper
+import io.dontsayboj.spindler.domain.model.GedcomIndex
+import io.dontsayboj.spindler.mapper.GedcomIndexDtoToModelMapper
 import spindler.composeapp.generated.resources.Res
 
 object SpindlerLocalDataSource {

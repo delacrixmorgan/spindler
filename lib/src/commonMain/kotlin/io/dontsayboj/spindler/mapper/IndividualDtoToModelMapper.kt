@@ -1,8 +1,8 @@
-package io.dontsayboj.spindler.sample.data.mapper
+package io.dontsayboj.spindler.mapper
 
-import io.dontsayboj.spindler.sample.data.utils.Mapper
-import io.dontsayboj.spindler.sample.domain.model.GedcomNode
-import io.dontsayboj.spindler.sample.domain.model.Individual
+import io.dontsayboj.spindler.domain.model.GedcomNode
+import io.dontsayboj.spindler.domain.model.Individual
+import io.dontsayboj.spindler.utils.Mapper
 
 class IndividualDtoToModelMapper(val id: String) : Mapper<GedcomNode, Individual> {
 

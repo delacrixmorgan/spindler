@@ -1,8 +1,8 @@
-package io.dontsayboj.spindler.sample.domain.model
+package io.dontsayboj.spindler.domain.model
 
-import io.dontsayboj.spindler.sample.data.utils.DateParsing
-import io.dontsayboj.spindler.sample.domain.enum.MacFamilyTreeTag
-import io.dontsayboj.spindler.sample.domain.enum.Tag
+import io.dontsayboj.spindler.domain.enum.MacFamilyTreeTag
+import io.dontsayboj.spindler.domain.enum.Tag
+import io.dontsayboj.spindler.utils.DateParsing
 import kotlinx.datetime.LocalDate
 
 data class Family(

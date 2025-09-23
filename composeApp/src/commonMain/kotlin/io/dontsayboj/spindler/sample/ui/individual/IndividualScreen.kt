@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import io.dontsayboj.spindler.sample.data.SpindlerRepository
-import io.dontsayboj.spindler.sample.data.utils.DateParsing
 import io.dontsayboj.spindler.sample.nav.Routes
 
 @Composable
@@ -40,7 +39,7 @@ fun IndividualScreen(
                     headlineContent = { Text(individual.formattedName) },
                     trailingContent = {
                         Column(horizontalAlignment = Alignment.End) {
-                            individual.birthDateRaw?.let { Text(DateParsing.tryParseDate(it)?.toString() ?: it) }
+                            Text(individual.birthDateFormatted)
                             individual.birthPlace?.let { Text(it) }
                         }
                     }

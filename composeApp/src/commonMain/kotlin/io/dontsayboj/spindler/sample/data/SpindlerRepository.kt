@@ -1,10 +1,10 @@
 package io.dontsayboj.spindler.sample.data
 
+import io.dontsayboj.spindler.domain.model.Family
+import io.dontsayboj.spindler.domain.model.Individual
 import io.dontsayboj.spindler.sample.data.local.SpindlerLocalDataSource
 import io.dontsayboj.spindler.sample.data.remote.RemoteDataSourceException
 import io.dontsayboj.spindler.sample.data.remote.SpindlerRemoteDataSource
-import io.dontsayboj.spindler.sample.domain.model.Family
-import io.dontsayboj.spindler.sample.domain.model.Individual
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
