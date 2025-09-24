@@ -11,10 +11,10 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import io.dontsayboj.spindler.sample.data.SpindlerRepository
 import io.dontsayboj.spindler.sample.nav.Routes
@@ -24,8 +24,8 @@ fun FamilyScreen(
     innerPadding: PaddingValues,
     navHostController: NavHostController
 ) {
-    val families by SpindlerRepository.families.collectAsStateWithLifecycle()
-    val individuals by SpindlerRepository.individuals.collectAsStateWithLifecycle()
+    val families by SpindlerRepository.families.collectAsState()
+    val individuals by SpindlerRepository.individuals.collectAsState()
     Box(
         Modifier
             .fillMaxSize()

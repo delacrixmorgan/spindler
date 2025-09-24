@@ -82,7 +82,7 @@ android {
 
 compose.desktop {
     application {
-        mainClass = "io.dontsayboj.spindler.MainKt"
+        mainClass = "io.dontsayboj.spindler.sample.MainKt"
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)

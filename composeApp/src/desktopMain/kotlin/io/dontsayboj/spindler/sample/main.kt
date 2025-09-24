@@ -1,4 +1,4 @@
-package io.dontsayboj.spindler
+package io.dontsayboj.spindler.sample
 
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application

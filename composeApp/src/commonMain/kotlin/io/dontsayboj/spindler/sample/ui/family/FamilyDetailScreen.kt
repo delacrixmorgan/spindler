@@ -18,8 +18,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.navigation.NavHostController
-import io.dontsayboj.spindler.sample.data.SpindlerRepository
 import io.dontsayboj.spindler.domain.enum.Tag
+import io.dontsayboj.spindler.sample.data.SpindlerRepository
 import io.dontsayboj.spindler.sample.nav.Routes
 
 @OptIn(ExperimentalMaterial3Api::class)

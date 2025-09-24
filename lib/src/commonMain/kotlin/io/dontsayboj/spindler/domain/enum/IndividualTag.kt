@@ -121,8 +121,3 @@ enum class IndividualEvent : IndividualTag {
     RETI,
     WILL
 }
-
-data class IndividualStructure(
-    val tag: IndividualTag,
-    val text: String
-)

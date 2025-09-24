@@ -39,8 +39,3 @@ enum class FamilyEvent : FamilyTag {
     MARR,
     MARS
 }
-
-data class FamilyStructure(
-    val tag: FamilyTag,
-    val text: String
-)
