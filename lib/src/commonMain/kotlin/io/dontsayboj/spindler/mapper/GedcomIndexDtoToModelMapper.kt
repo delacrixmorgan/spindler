@@ -1,5 +1,6 @@
 package io.dontsayboj.spindler.mapper
 
+import io.dontsayboj.spindler.domain.enum.GedcomIndexTag
 import io.dontsayboj.spindler.domain.model.Family
 import io.dontsayboj.spindler.domain.model.GedcomIndex
 import io.dontsayboj.spindler.domain.model.Individual
@@ -15,11 +16,11 @@ class GedcomIndexDtoToModelMapper : Mapper<String, GedcomIndex> {
 
         for (node in nodes) {
             when (node.tag) {
-                "INDI" -> {
+                GedcomIndexTag.INDI.name -> {
                     val id = node.pointer ?: node.value ?: "UNKNOWN"
                     individuals[id] = IndividualDtoToModelMapper(id)(node)
                 }
-                "FAM" -> {
+                GedcomIndexTag.FAM.name -> {
                     val id = node.pointer ?: node.value ?: "UNKNOWN"
                     families[id] = FamilyDtoToModelMapper(id)(node)
                 }
