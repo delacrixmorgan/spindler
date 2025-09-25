@@ -67,7 +67,7 @@ android {
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
-        versionName = "0.0.2"
+        versionName = "0.0.4"
     }
     buildTypes {
         release {
