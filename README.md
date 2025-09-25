@@ -13,6 +13,10 @@ centuries!
 Built with modern Kotlin Multiplatform magic ✨, it works seamlessly across Android, iOS, and  
 Desktop - because family trees shouldn't be platform-locked!
 
+![screenshot_overview](screenshots/0_overview.gif)
+
+> Try out the `sample` app!
+
 ## 🌟 Features
 
 - 📊 **Complete GEDCOM Parsing** — Transform GEDCOM 5.5.1, 5.5.5 and 7.0 files into clear, structured
