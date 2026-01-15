@@ -4,6 +4,9 @@ plugins {
     id("maven-publish")
 }
 
+group = "com.github.delacrixmorgan"
+version = libs.versions.spindler.get()
+
 kotlin {
     androidTarget()
     listOf(
@@ -33,11 +36,24 @@ android {
 
     defaultConfig {
         minSdk = 21
-        version = "0.0.6"
+        version = libs.versions.spindler.get()
         consumerProguardFiles("consumer-rules.pro")
     }
 
     publishing {
         singleVariant("release")
+    }
+}
+
+publishing {
+    publications {
+        withType<MavenPublication> {
+            groupId = "com.github.delacrixmorgan"
+            artifactId = if (name == "kotlinMultiplatform") {
+                "spindler"
+            } else {
+                "spindler-$name"
+            }
+        }
     }
 }
