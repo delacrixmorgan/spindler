@@ -35,7 +35,7 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        minSdk = 21
+        minSdk = libs.versions.android.minSdk.get().toInt()
         version = libs.versions.spindler.get()
         consumerProguardFiles("consumer-rules.pro")
     }
