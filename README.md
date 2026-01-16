@@ -355,8 +355,8 @@ val customTags = individual.nodes.filter {
 ## 🏗️ Supported Platforms
 
 - ✅ **Android** - API 21+ (Android 5.0+)
-- ✅ **iOS** - iOS 11.0+, all architectures (x64, arm64, simulator arm64)
 - ✅ **Desktop/JVM** - Java 8+
+- 🔄 **iOS** - Coming soon!
 - 🔄 **Web** - Coming soon!
 
 ## 🤝 Contributing
