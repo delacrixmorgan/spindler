@@ -6,16 +6,16 @@ plugins {
 
 kotlin {
     androidTarget()
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach { target ->
-        target.binaries.framework {
-            baseName = "Spindler"
-            isStatic = true
-        }
-    }
+//    listOf(
+//        iosX64(),
+//        iosArm64(),
+//        iosSimulatorArm64()
+//    ).forEach { target ->
+//        target.binaries.framework {
+//            baseName = "Spindler"
+//            isStatic = true
+//        }
+//    }
     jvm("desktop")
     sourceSets {
         commonMain.dependencies {
