@@ -1,7 +1,5 @@
 # Spindler - GEDCOM Kotlin Multiplatform Parser 🌳
 
-[![](https://jitpack.io/v/delacrixmorgan/spindler.svg)](https://jitpack.io/#delacrixmorgan/spindler)
-
 **Spindler** is a delightfully powerful Kotlin Multiplatform Compose library that transforms GEDCOM
 genealogy files into beautiful, type-safe Kotlin models! 🎉
 
@@ -45,16 +43,16 @@ Desktop - because family trees shouldn't be platform-locked!
 
 ## 📦 Installation
 
-Add the dependency in your `build.gradle`:
+Add the dependency in your `build.gradle.kts`:
 
 ### Step 1
 
-Add the JitPack repository to your `build.gradle` file:
+Add the mavenCentral repository to your `settings.gradle.kts` file:
 
 ```groovy
-allprojects {
+dependencyResolutionManagement {
     repositories {
-        maven { url "https://jitpack.io" }
+        mavenCentral()
     }
 }
 ```
@@ -65,7 +63,7 @@ Add the dependency:
 
 ```groovy
 dependencies {
-    implementation "com.github.delacrixmorgan:spindler:X.X.X"
+    implementation("io.github.delacrixmorgan:spindler:X.X.X")
 }
 ```
 
@@ -356,7 +354,7 @@ val customTags = individual.nodes.filter {
 
 - ✅ **Android** - API 21+ (Android 5.0+)
 - ✅ **Desktop/JVM** - Java 8+
-- 🔄 **iOS** - Coming soon!
+- ✅ **iOS** - iOS 11.0+, all architectures (x64, arm64, simulator arm64)
 - 🔄 **Web** - Coming soon!
 
 ## 🤝 Contributing
