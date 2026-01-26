@@ -348,8 +348,8 @@ val customTags = individual.nodes.filter {
     it.tag.startsWith("_") // Custom tags often start with _}  
 
 // Access specific node data  
-    val occupationNode = individual.nodes.firstOrNull { it.tag == "OCCU" }
-    val occupation = occupationNode?.value
+val occupationNode = individual.nodes.firstOrNull { it.tag == "OCCU" }
+val occupation = occupationNode?.value
 ```  
 
 ## 🏗️ Supported Platforms
