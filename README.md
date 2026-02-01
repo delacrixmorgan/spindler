@@ -1,5 +1,7 @@
 # Spindler - GEDCOM Kotlin Multiplatform Parser 🌳
 
+![Maven Central Version](https://img.shields.io/maven-central/v/com.dontsaybojio/spindler?color=%234c1)
+
 **Spindler** is a delightfully powerful Kotlin Multiplatform Compose library that transforms GEDCOM
 genealogy files into beautiful, type-safe Kotlin models! 🎉
 
@@ -63,7 +65,7 @@ Add the dependency:
 
 ```groovy
 dependencies {
-    implementation("io.github.delacrixmorgan:spindler:X.X.X")
+    implementation("com.dontsaybojio:spindler:X.X.X")
 }
 ```
 
