@@ -2,6 +2,8 @@ package com.dontsaybojio.spindler.sample.data.local
 
 import com.dontsaybojio.spindler.domain.model.GedcomIndex
 import com.dontsaybojio.spindler.mapper.GedcomIndexDtoToModelMapper
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import spindler.sample.generated.resources.Res
 
 object SpindlerLocalDataSource {
@@ -10,6 +12,8 @@ object SpindlerLocalDataSource {
 
     suspend fun getData(): GedcomIndex {
         val text = Res.readBytes(path = path).decodeToString()
-        return gedcomIndexDtoToModelMapper(text)
+        return withContext(Dispatchers.Default) {
+            gedcomIndexDtoToModelMapper(text)
+        }
     }
 }
