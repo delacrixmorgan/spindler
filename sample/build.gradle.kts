@@ -51,11 +51,11 @@ kotlin {
 }
 
 android {
-    namespace = "io.dontsayboj.spindler.sample"
+    namespace = "com.dontsaybojio.spindler.sample"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "io.dontsayboj.spindler"
+        applicationId = "com.dontsaybojio.spindler"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
@@ -74,11 +74,11 @@ android {
 
 compose.desktop {
     application {
-        mainClass = "io.dontsayboj.spindler.sample.MainKt"
+        mainClass = "com.dontsaybojio.spindler.sample.MainKt"
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "io.dontsayboj.spindler"
+            packageName = "com.dontsaybojio.spindler"
             packageVersion = "1.0.0"
         }
     }

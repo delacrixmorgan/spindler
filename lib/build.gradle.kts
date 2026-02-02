@@ -6,9 +6,9 @@ plugins {
 
 mavenPublishing {
     coordinates(
-        groupId = "io.github.delacrixmorgan",
+        groupId = "com.dontsaybojio",
         artifactId = "spindler",
-        version = "0.2.0"
+        version = "0.3.0"
     )
     pom {
         name.set("Spindler")
@@ -53,7 +53,7 @@ kotlin {
 }
 
 android {
-    namespace = "io.dontsayboj.spindler"
+    namespace = "com.dontsaybojio.spindler"
     compileSdk = 36
 
     defaultConfig {
