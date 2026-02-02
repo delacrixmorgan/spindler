@@ -1,11 +1,17 @@
 [versions]
 agp = "9.0.0"
-spindler = "0.0.23"
+spindler = "0.3.1"
 android-compileSdk = "36"
 android-minSdk = "23"
 android-targetSdk = "36"
+foundation = "1.10.0"
+material3 = "1.9.0"
+materialIconsExtended = "1.7.3"
+runtime = "1.10.0"
+resources = "1.10.0"
 
-compose-bom = "2026.01.00"
+androidx-activity = "1.12.3"
+compose-bom = "2026.01.01"
 androidx-navigation-compose = "2.9.1"
 compose-hot-reload = "1.0.0"
 composeMultiplatform = "1.10.0"
@@ -14,9 +20,13 @@ kotlinx-coroutines = "1.10.2"
 kotlinx-datetime = "0.7.1" # https://github.com/Kotlin/kotlinx-datetime/releases
 ktor = "3.4.0"
 mavenPublish = "0.36.0"
+ui = "1.10.0"
+uiTooling = "1.10.0"
+uiToolingPreview = "1.10.0"
 
 [libraries]
 compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
 androidx-navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "androidx-navigation-compose" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 kotlinx-coroutinesSwing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
@@ -25,11 +35,18 @@ ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
+compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "foundation" }
+compose-material-icons-extended = { module = "org.jetbrains.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
+compose-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "material3" }
+compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "runtime" }
+compose-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "resources" }
+compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "ui" }
+compose-ui-tooling = { module = "org.jetbrains.compose.ui:ui-tooling", version.ref = "uiTooling" }
+compose-ui-tooling-preview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "uiToolingPreview" }
 
 [plugins]
-android-kotlin-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }
 android-application = { id = "com.android.application", version.ref = "agp" }
-android-library = { id = "com.android.library", version.ref = "agp" }
+android-kmp-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }
 compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "composeMultiplatform" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 compose-hot-reload = { id = "org.jetbrains.compose.hot-reload", version.ref = "compose-hot-reload" }

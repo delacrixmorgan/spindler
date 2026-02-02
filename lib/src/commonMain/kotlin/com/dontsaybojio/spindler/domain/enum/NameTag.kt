@@ -1,0 +1,32 @@
+package com.dontsaybojio.spindler.domain.enum
+
+import com.dontsaybojio.spindler.domain.enum.NameTag.GIVN
+import com.dontsaybojio.spindler.domain.enum.NameTag.NICK
+import com.dontsaybojio.spindler.domain.enum.NameTag.NPFX
+import com.dontsaybojio.spindler.domain.enum.NameTag.NSFX
+import com.dontsaybojio.spindler.domain.enum.NameTag.SPFX
+import com.dontsaybojio.spindler.domain.enum.NameTag.SURN
+
+/**
+ * PERSONAL_NAME_PIECES :=
+ *
+ * @param NPFX Name prefix
+ * @param GIVN Given name
+ * @param NICK Nickname
+ * @param SPFX Surname prefix
+ * @param SURN Surname
+ * @param NSFX Name suffix
+ */
+enum class NameTag {
+    NPFX,
+    GIVN,
+    NICK,
+    SPFX,
+    SURN,
+    NSFX
+}
+
+data class NameStructure(
+    val tag: com.dontsaybojio.spindler.domain.enum.NameTag,
+    val text: String
+)

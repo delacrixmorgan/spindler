@@ -1,14 +1,14 @@
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
-    alias(libs.plugins.android.library)
+    alias(libs.plugins.android.kmp.library)
     alias(libs.plugins.maven.publish)
 }
 
 mavenPublishing {
     coordinates(
-        groupId = "io.github.delacrixmorgan",
+        groupId = "com.dontsaybojio",
         artifactId = "spindler",
-        version = "0.2.0"
+        version = libs.versions.spindler.get()
     )
     pom {
         name.set("Spindler")
@@ -37,7 +37,11 @@ mavenPublishing {
 }
 
 kotlin {
-    androidTarget()
+    androidLibrary {
+        namespace = "com.dontsaybojio.spindler.lib"
+        compileSdk = libs.versions.android.compileSdk.get().toInt()
+        minSdk = libs.versions.android.minSdk.get().toInt()
+    }
     iosX64()
     iosArm64()
     iosSimulatorArm64()
@@ -49,20 +53,5 @@ kotlin {
         commonTest.dependencies {
             implementation(kotlin("test"))
         }
-    }
-}
-
-android {
-    namespace = "io.dontsayboj.spindler"
-    compileSdk = 36
-
-    defaultConfig {
-        minSdk = 21
-        version = "0.0.6"
-        consumerProguardFiles("consumer-rules.pro")
-    }
-
-    publishing {
-        singleVariant("release")
     }
 }
