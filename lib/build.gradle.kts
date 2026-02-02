@@ -8,7 +8,7 @@ mavenPublishing {
     coordinates(
         groupId = "com.dontsaybojio",
         artifactId = "spindler",
-        version = "0.3.0"
+        version = libs.versions.spindler.get()
     )
     pom {
         name.set("Spindler")
